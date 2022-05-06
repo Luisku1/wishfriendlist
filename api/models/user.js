@@ -1,6 +1,6 @@
 'user strict'
 
-var mongoose = require('ongoose');
+var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 //Preparamos el modelo con el Json

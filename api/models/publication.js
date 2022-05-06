@@ -7,7 +7,8 @@ var PublicationSchema = Schema({
 
     namePublication : String,
     text : String,
-    created_at : String,
+    createdAt : String,
+    file : String,
     user: {type: Schema.ObjectId, ref: 'User'}
 
 });

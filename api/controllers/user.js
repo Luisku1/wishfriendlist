@@ -9,8 +9,8 @@ var path = require('path');
 //Mandamo a llamar el export del archivo user.js
 
 var User = require('../models/user');
-
-
+var Follow = require('../models/follow');
+var Publication = require('../models/publication');
 
 //Rutas de prueba
 function home(req, res) {
@@ -18,7 +18,7 @@ function home(req, res) {
     res.status(200).send({
 
         message: 'Hola mundo desde el servidor de NodeJS'
-    })
+    });
 
 }
 
@@ -93,7 +93,7 @@ function signUpUser(req, res){
 
         res.status(200).send({
             message: 'Llena todos los campos solicitados'
-        })
+        });
     }
 
 }
@@ -133,7 +133,7 @@ function logInUser(req, res)
 
                         //devolver datos de usuario
                         user.password = undefined; //Elimina la password para devolver los datos sin la password
-                        return res.status(200).sed({user})
+                        return res.status(200).sed({user});
                     }
                 
                 } else {
@@ -162,9 +162,85 @@ function getUser(req, res)
 
         user.password = undefined;
 
-        return res.status(200).send({user});
+        followThisUser(req.user.sub, userId).then((value) =>
+        {
+            user.password = undefined;
+
+            return res.status(200).send({user, value})
+
+        })
+
+        
     });
 }
+
+async function followThisUser(identityUserId, userId)
+{
+    var following = await Follow.findOne({"user": identityUserId, "followed": userId}).exec().then((follow) => {
+
+        return follow;
+
+
+    }).catch((err) =>
+    {
+        return handleError(err);
+    });
+
+
+    var followed = await Follow.findOne({"user": userId, "followed": identityUserId}).exec().then((follow) => {
+
+        return follow;
+
+    }).catch((err) =>
+    {
+        return handleError(err);
+    });
+
+    return {
+
+        following: following,
+        followed: followed
+    }
+}
+
+async function followUserIds(userId)
+{
+    var following = await Follow.find({"user": userId}).select({'_id': 0, '__v':0, 'user':0}).exec((err, follows) =>
+    {
+        return follows;
+    });
+
+    var followed = await Follow.find({"followed": userId}).select({'_id': 0, '__v':0, 'followed':0}).exec((err, follows) =>
+    {
+        return follows;
+    });
+
+    //procesar following ids
+    var followingClean = [];
+
+    follows.forEach((follow) =>
+    {
+        followingClean.push(follow.followed);
+
+    });
+
+    //procesar followed ids
+    var followedClean = [];
+
+    follows.forEach((follow) =>
+    {
+        followedClean.push(follow.user);
+
+    });
+
+    return {
+
+        following: following,
+        followed: followed
+    }
+
+}
+
 
 //Devolver lista de usuarios
 function getUsers(req, res)
@@ -177,7 +253,7 @@ function getUsers(req, res)
         page = req.params.page;
     }
 
-    var itemsPerPage = 1;
+    var itemsPerPage = 5;
 
     User.find().sort('_id').paginate(page, itemsPerPage, (err, users, total) =>
     {
@@ -185,13 +261,76 @@ function getUsers(req, res)
 
         if(!users) return res.status(404).send({message : 'No hay usuarios disponibles'});
 
-        return res.status(200).send({
+        followUserIds(identityUserId).then((value) =>
+        {
+            return res.status(200).send({
             
-            users,
-            total,
-            pages: Math.ceil(total/itemsPerPage)
-        });
+                users,
+                usersFollowing: value.following,
+                usersFollowMe: value.followed,
+                total,
+                pages: Math.ceil(total/itemsPerPage)
+            });
+        })
+
+        
     });
+}
+
+function getCounters(req, res)
+{
+    var userId = req.user.sub;
+
+    if(req.params.id)
+    {
+        userId = req.params.id;
+    
+    }
+
+    getCountFollow(req.params.id).then((value) =>
+    {
+
+        return res.stats(200).send({value});
+    });
+}
+
+async function getCountFollow(user_id) {
+
+    var following = await Follow.countDocuments({ user: user_id })
+        .exec()
+        .then((count) => 
+        {
+    
+            return count;
+
+        }).catch((err) => 
+        { 
+            return handleError(err); 
+        });
+ 
+    var followed = await Follow.countDocuments({ followed: user_id })
+        .exec()
+        .then((count) => 
+        {
+            return count;
+        }).catch((err) => 
+        { 
+            return handleError(err); 
+        });
+
+    var publications = await Publication.countDocuments({ user: user_id})
+        .exec()
+        .then((count) => {
+          return count;
+        })
+        .catch((err) => { return handleError(err); });
+
+    return {
+
+        following: following,
+        followed: followed,
+        publications: publications
+    }
 }
 
 //Editar datos de usuario
@@ -225,11 +364,6 @@ function uploadImage(req, res)
 {
     var userId = req.params.id;
 
-    if(userId != req.user.sub)
-    {
-        return res.status(500).send({message: 'No tienes permiso para actualizar los datos del usuario'})
-    }
-
     if(req.files)
     {
         var filePath = req.files.image.path;
@@ -247,7 +381,7 @@ function uploadImage(req, res)
         {
             //Actualizar documento de usuario loggeado
 
-            User.findByIdAndUpdate(userId, {image: fileName}, {new:true}, (err, userUpdated) =>
+            User.findByIdAndUpdate(userId, {profileImagee: fileName}, {new:true}, (err, userUpdated) =>
             {
                 if(err) return res.status(500).send({message: 'Error en la petición'});
                 if(!userUpdated) return res.status(404).send({message: 'No se ha podido actualizar el usuario'});
@@ -278,7 +412,7 @@ function removeFilesoOfUploads(res, filePath, message)
 function getImageFile(req, res)
 {
     var imageFile = req.params.imageFile;
-    var pathFile = './uploads/users/' + image_file;
+    var pathFile = './uploads/users/' + imageFile;
 
     fs.exists(pathFile, (exists) =>
     {
@@ -293,6 +427,8 @@ function getImageFile(req, res)
     })
 }
 
+
+
 module.exports = {
 
     home,
@@ -301,6 +437,8 @@ module.exports = {
     logInUser,
     getUser,
     getUsers,
+    getCounters,
     updateUser,
+    uploadImage,
     getImageFile
 }
