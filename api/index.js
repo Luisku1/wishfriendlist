@@ -15,7 +15,7 @@ mongoose.connect('mongodb://localhost:27017/wishfriendlist', { useNewUrlParser: 
         //Aquí se crea el servidor, al colocarle un escucha al puerto
         app.listen(port, () => {
 
-            console.log("servidor corriendo en http://localhost:3800");
+            console.log("servidor corriendo en http://localhost:3800 con Jira como prueba");
 
         })
     })
