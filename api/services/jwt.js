@@ -2,7 +2,7 @@
 
 var jwt = require('jwt-simple');
 var moment = require('moment');
-var secretKey = 'wishfriendlists security authentication key';
+var secretKey = 'wishfriendlists_security_authentication_key';
 
 exports.createToken = function(user)
 {

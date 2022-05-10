@@ -2,7 +2,7 @@
 
 var jwt = require('jwt-simple');
 var moment = require('moment');
-var secretKey = 'wishfriendlists security authentication key';
+var secretKey = 'wishfriendlists_security_authentication_key';
 
 exports.ensureAuth = function(req, res, next)
 {
@@ -19,14 +19,14 @@ exports.ensureAuth = function(req, res, next)
 
         if(payload.exp <= moment().unix())
         {
-            return res.stauts(401).send({
+            return res.status(401).send({
                 message: 'El token ha expirado'
             });
         }
 
     } catch (ex) {
     
-        return res.stauts(404).send({
+        return res.status(404).send({
             message: 'El token no es válido'
         });
     }

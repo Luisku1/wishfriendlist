@@ -1,0 +1,84 @@
+<div class = "col-lg-5">
+
+    <h1 class="h1-strong">{{title}}</h1>
+
+    <div class="alert alert-success" *ngIf="status == 'success'">
+
+        Registro completado correctamente, <a [routerLink]="['/login']">Identifícate aquí</a>
+
+    </div>
+
+    <div class="alert alert-danger" *ngIf="status == 'error'">
+        
+        El registro no ha podido completarse, quizas tu email ya está en uso, inténtalo de nuevo
+
+    </div>
+
+    <form #signUpForm="ngForm" (ngSubmit)="onSubmit(signUpForm)" class="col-lg-12">
+
+        <p>
+            <label>Nombres</label>
+            <input type="text" name="name" #name="ngModel" [(ngModel)]="user.name" class = "form-control" required/>
+            <span *ngIf="!name.valid && name.touched">
+
+                Los nombres son obligatorios
+
+            </span>
+        </p>
+
+        <p>
+            <label>Apellidos</label>
+            <input type="text" name="lastName" #lastName="ngModel" [(ngModel)]="user.lastName" class="form-control" required/>
+            <span *ngIf="!lastName.valid && lastName.touched">
+
+                Los apllidos son obligatorios
+
+            </span>
+        </p>
+
+        <p>
+            <label>Fecha de Nacimiento</label>
+            <input type="text" name = "birthDay" #birthDay="ngModel" [(ngModel)]="user.birthDay" class="form-control" required/>
+            <span *ngIf="!birthDay.valid && birthDay.touched">
+
+                La fecha de nacimiento es obligatoria
+
+            </span>
+        </p>
+
+        <p>
+            <label>Número de Teléfono</label>
+            <input type="text" name = "phoneNumber" #phoneNumber="ngModel" [(ngModel)]="user.phoneNumber" class="form-control" required/>
+            <span *ngIf="!phoneNumber.valid && phoneNumber.touched">
+
+                El número de teléfono es oblitatorio
+
+            </span>
+        </p>
+
+        <p>
+            <label>Correo Electrónico</label>
+            <input type="email" name="email" #email="ngModel" [(ngModel)]="user.email" class="form-control" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"/>
+            <span *ngIf="!email.valid && email.touched">
+
+                El correo electrónico es obligatorio!
+
+            </span>
+        </p>
+
+        <p>
+            <label>Contraseña</label>
+            <input type="password" name="password" #password="ngModel" [(ngModel)]="user.password" class="form-control" required/>
+            <span *ngIf="!password.valid && password.touched">
+
+                La contraseña es obligatoria
+
+            </span>
+        </p>
+
+        <input type="submit" value="{{title}}" class="btn btn-success" [disabled]="!signUpForm.form.valid"/>
+
+    </form>
+
+</div>
+

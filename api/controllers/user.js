@@ -48,7 +48,7 @@ function signUpUser(req, res){
         user.profileImage = null;
 
         //Controllar que no haya usuarios duplicados
-        user.find({ $or : [
+        User.find({ $or : [
             
             {email : user.email.toLowerCase()},
             {phoneNumber : user.phoneNumber}
@@ -115,11 +115,11 @@ function logInUser(req, res)
 
             bcrypt.compare(password, user.password, (err, validate) =>{
 
-                if(check)
+                if(validate)
                 {
                     //El usuario se ha loggeado correctamente
 
-                    if(params.gettoken)
+                    if(params.getToken)
                     {
                         //devolver un token
                         //generar token
@@ -133,7 +133,7 @@ function logInUser(req, res)
 
                         //devolver datos de usuario
                         user.password = undefined; //Elimina la password para devolver los datos sin la password
-                        return res.status(200).sed({user});
+                        return res.status(200).send({user});
                     }
                 
                 } else {
@@ -290,7 +290,7 @@ function getCounters(req, res)
     getCountFollow(req.params.id).then((value) =>
     {
 
-        return res.stats(200).send({value});
+        return res.status(200).send({value});
     });
 }
 

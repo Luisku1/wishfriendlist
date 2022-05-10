@@ -12,7 +12,7 @@ var middleWareUpload = multipart({uploadDir: './uploads/users'});
 //rutas
 api.get('/home', UserController.home);
 api.get('/pruebas', middleWareValidate.ensureAuth, UserController.pruebas);
-api.post('/register', UserController.signUpUser);
+api.post('/signup', UserController.signUpUser);
 api.post('/login', UserController.logInUser);
 api.get('/user/:id', middleWareValidate.ensureAuth, UserController.getUser);
 api.get('/users/:page?', middleWareValidate.ensureAuth, UserController.getUsers);
