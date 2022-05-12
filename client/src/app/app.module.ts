@@ -10,13 +10,17 @@ import { AppComponent } from './app.component';
 import { LogInComponent } from './components/logIn/logIn.component';
 import { SignUpComponent } from './components/signUp/signUp.component';
 import { HomeComponent } from './components/home/home.component';
+import { UserEditComponent } from './components/user-edit/user-edit.component';
+import { UsersComponent } from './components/users/users.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LogInComponent,
     SignUpComponent,
-    HomeComponent
+    HomeComponent,
+    UserEditComponent,
+    UsersComponent
   ],
   imports: [
     BrowserModule,

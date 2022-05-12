@@ -21,10 +21,7 @@ function saveFollow(req, res)
         if(!followStored) return res.status(404).send({message: 'El seguimiento no se ha guardado'});
 
         return res.status(200).send({follow: followStored});
-    })
-
-
-    res.status(200).send({message: 'Hola mundo desde el controlador follows'});
+    });
 }
 
 function unfollow(req, res)
@@ -32,7 +29,7 @@ function unfollow(req, res)
     var userId = req.user.sub;
     var followedId = req.params.id;
 
-    Follow.find({'user': userId, 'followed': followedId}).remove(err =>
+    Follow.find({'user': userId, 'followed': followedId}).deleteOne(err =>
         {
             if(err) return res.status(500).send({message: 'Error al dejar de seguir'});
 

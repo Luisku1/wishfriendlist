@@ -24,7 +24,7 @@
           </li>
 
           <li>
-            <a href = "#">
+            <a [routerLink]="['/users']" [routerLinkActive]="['active']">
               <span class = "glyphicon glyphicon-user"></span>
               Usuarios
             </a>
@@ -51,9 +51,11 @@
         </ul>
 
         <ul class="nav navbar-nav navbar-right" *ngIf="identity">
+          
           <li class="avatar">
-            <!--Cargar imagen de usuario-->
+            <img src="{{ url + 'get-image-user/' + identity.profileImage }}" *ngIf="identity && identity.profileImage"/>
           </li>
+
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
               {{identity.name}} <span class="caret"></span>
@@ -66,7 +68,7 @@
                 </a>
               </li>
               <li>
-                <a href="#">
+                <a [routerLink]="['/myData']">
                   <span class="glyphicon glyphicon-cog"></span>
                   Mis datos
                 </a>

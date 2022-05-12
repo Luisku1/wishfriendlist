@@ -1,6 +1,7 @@
 import { Component, OnInit, DoCheck } from '@angular/core';
 import { Router, ActivatedRoute, Params} from '@angular/router';
 import { UserService } from './services/user.service';
+import { GLOBAL } from './services/global';
 
 @Component({
   selector: 'app-root',
@@ -12,6 +13,7 @@ import { UserService } from './services/user.service';
 export class AppComponent implements DoCheck, OnInit {
   public title:string;
   public identity: any;
+  public url:string;
 
   constructor(
 
@@ -22,6 +24,7 @@ export class AppComponent implements DoCheck, OnInit {
   {
     this.title = 'Wish Friend List';
     this.identity = null;
+    this.url = GLOBAL.url;
   }
 
   ngOnInit()

@@ -58,6 +58,22 @@
     background: #eee !important;
 }
 
+.navigation .avatar {
+
+    width: 35px;
+    height: 35px;
+    border-radius: 100px;
+    overflow: hidden;
+    margin-top: 9px;
+    margin-right: 2px;
+}
+
+.navigation .avatar img{
+
+    height: auto;
+    width: 40 px;
+}
+
 .jumbotron
 {
     padding: 25px;
@@ -66,3 +82,42 @@
 
 }
 
+.user-image-for-edit img{
+    height: 60px;
+}
+
+.itemUser .imageUser
+{
+    width: 75px;
+    height: 75px;
+    border-radius: 100px;
+    overflow: hidden;
+    margin-right: 15px;
+}
+
+.itemUser .imageUser img
+{
+    width: 120px;
+
+}
+
+.itemUser .userName
+{
+    margin-top: 10px;
+}
+
+.itemUser .userName
+{
+    color:#48004e;
+}
+
+.itemUser .userName .fullName
+{
+    color: rgb(164, 69, 150);
+    font-weight: bold;
+}
+
+.avatarDefault
+{
+    width: 100% !important;
+}

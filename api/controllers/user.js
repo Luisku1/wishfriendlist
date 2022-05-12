@@ -11,6 +11,7 @@ var path = require('path');
 var User = require('../models/user');
 var Follow = require('../models/follow');
 var Publication = require('../models/publication');
+const user = require('../models/user');
 
 //Rutas de prueba
 function home(req, res) {
@@ -205,12 +206,12 @@ async function followThisUser(identityUserId, userId)
 
 async function followUserIds(userId)
 {
-    var following = await Follow.find({"user": userId}).select({'_id': 0, '__v':0, 'user':0}).exec((err, follows) =>
+    /* var following = await Follow.find({"user": userId}).select({'_id': 0, '__v':0, 'user':0}).exec((_err, follows) =>
     {
         return follows;
     });
 
-    var followed = await Follow.find({"followed": userId}).select({'_id': 0, '__v':0, 'followed':0}).exec((err, follows) =>
+    var followed = await Follow.find({"followed": userId}).select({'_id': 0, '__v':0, 'followed':0}).exec((_err, follows) =>
     {
         return follows;
     });
@@ -218,7 +219,7 @@ async function followUserIds(userId)
     //procesar following ids
     var followingClean = [];
 
-    follows.forEach((follow) =>
+    following.forEach((follow) =>
     {
         followingClean.push(follow.followed);
 
@@ -227,7 +228,7 @@ async function followUserIds(userId)
     //procesar followed ids
     var followedClean = [];
 
-    follows.forEach((follow) =>
+    followed.forEach((follow) =>
     {
         followedClean.push(follow.user);
 
@@ -237,6 +238,50 @@ async function followUserIds(userId)
 
         following: following,
         followed: followed
+    } */
+
+    try{
+        //Obejter los usuarios que seguimos          //El select es para mostrar los campos que yo quiera
+        var following = await Follow.find({'user': userId }).select({'_id':0, '__v':0, 'user': 0}).exec()
+            .then((following) =>{
+                var follows_clean = [];
+    
+                following.forEach((follow) =>{
+                    //console.log("followed", follow.followed);
+                    //Guardar los usuarios que yo sigo
+                    follows_clean.push(follow.followed);
+                });
+    
+                return follows_clean;
+            })
+            .catch((err)=>{ 
+                return handleerror(err);
+            });
+    
+        //Obejter los usuarios que seguimos          //El select es para mostrar los campos que yo quiera
+        var followed = await Follow.find({'followed':userId }).select({'_id':0, '__v':0, 'followed': 0}).exec()
+            .then((following) =>{
+                var follows_clean = [];
+    
+                following.forEach((follow) =>{
+                    //console.log("user", follow.user);
+                    //Guardar los usuarios que yo sigo
+                    follows_clean.push(follow.user);
+                });
+    
+                return follows_clean;
+            })
+            .catch((err)=>{
+                return handleerror(err);
+            });
+    
+        return {
+            following: following,
+            followed: followed
+        }
+
+    }catch(e){
+        console.log(e);
     }
 
 }
@@ -348,12 +393,29 @@ function updateUser(req, res)
         return res.status(500).send({message: 'No tienes permiso de actualizar los datos del usuario'});
     }
 
-    User.findByIdAndUpdate(userId, update, {new: true}, (err, userUpdated) =>
-    {
-        if(err) return res.status(500).send({message: 'Error en la petición'});
-        if(!userUpdated) return res.status(404).send({message: 'No se ha podido actualizar el usuario'});
+    User.find({ $or : [
+            
+        {email : update.email.toLowerCase()},
+        {phoneNumber : update.phoneNumber}
 
-        return res.status(200).send({user: userUpdated});
+    ]}).exec((err, users) =>
+    {
+        var user_isset = false;
+
+        users.forEach((user) => 
+        {
+            if(user._id != userId) user_isset = true;
+        });
+
+        if(user_isset) return res.status(404).send({message: 'El teléfono ya se encuentra en uso'});
+        
+        User.findByIdAndUpdate(userId, update, {new: true}, (err, userUpdated) =>
+        {
+            if(err) return res.status(500).send({message: 'Error en la petición'});
+            if(!userUpdated) return res.status(404).send({message: 'No se ha podido actualizar el usuario'});
+
+            return res.status(200).send({user: userUpdated});
+        });
     });
 
 }
@@ -367,7 +429,7 @@ function uploadImage(req, res)
     if(req.files)
     {
         var filePath = req.files.image.path;
-        var fileSplit = filePath.split('\\');
+        var fileSplit = filePath.split('/');
         var fileName = fileSplit[2];
         var extSplit = fileName.split('\.');
         var fileExt = extSplit[1];
@@ -381,7 +443,7 @@ function uploadImage(req, res)
         {
             //Actualizar documento de usuario loggeado
 
-            User.findByIdAndUpdate(userId, {profileImagee: fileName}, {new:true}, (err, userUpdated) =>
+            User.findByIdAndUpdate(userId, {profileImage: fileName}, {new:true}, (err, userUpdated) =>
             {
                 if(err) return res.status(500).send({message: 'Error en la petición'});
                 if(!userUpdated) return res.status(404).send({message: 'No se ha podido actualizar el usuario'});

@@ -125,7 +125,7 @@ export class LogInComponent implements OnInit
             {
                 localStorage.setItem('stats', JSON.stringify(response));
                 this.status = 'success';
-                this._router.navigate(['/']);
+                this._router.navigate(['/home']);
             },
             error =>
             {
