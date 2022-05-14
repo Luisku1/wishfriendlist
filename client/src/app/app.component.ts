@@ -14,12 +14,13 @@ export class AppComponent implements DoCheck, OnInit {
   public title:string;
   public identity: any;
   public url:string;
+  public stats: any;
 
   constructor(
 
     private _route: ActivatedRoute,
     private _router: Router,
-    private _userService:UserService
+    private _userService:UserService,
   )
   {
     this.title = 'Wish Friend List';
@@ -30,11 +31,13 @@ export class AppComponent implements DoCheck, OnInit {
   ngOnInit()
   {
     this.identity = this._userService.getIdentity();
+    this.stats = this._userService.getStats();
   }
 
   ngDoCheck()
   {
     this.identity = this._userService.getIdentity();
+    this.stats = this._userService.getStats();
   }
 
   logout()
@@ -42,7 +45,7 @@ export class AppComponent implements DoCheck, OnInit {
     localStorage.clear();
     this.identity = null;
 
-    this._router.navigate(['/']);
+    this._router.navigate(['/login']);
 
   }
 

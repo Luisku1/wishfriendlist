@@ -332,7 +332,7 @@ function getCounters(req, res)
     
     }
 
-    getCountFollow(req.params.id).then((value) =>
+    getCountFollow(userId).then((value) =>
     {
 
         return res.status(200).send({value});
@@ -439,7 +439,7 @@ function uploadImage(req, res)
             return removeFilesoOfUploads(res, filePath, 'No tienes permiso para actualizar los datos del usuario');
         }
 
-        if(fileExt == 'png' || fileExt == 'jpg' || fileExt == 'gif')
+        if(fileExt == 'png' || fileExt == 'jpg' || fileExt == 'gif' || fileExt == 'jpeg')
         {
             //Actualizar documento de usuario loggeado
 
