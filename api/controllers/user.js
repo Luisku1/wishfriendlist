@@ -453,7 +453,7 @@ function uploadImage(req, res)
             
         } else {
 
-            return removeFilesoOfUploads(res, filePath, 'No tienes permiso para actualizar los datos del usuario');
+            return removeFilesOfUploads(res, filePath, 'No tienes permiso para actualizar los datos del usuario');
         }
 
 
@@ -463,7 +463,7 @@ function uploadImage(req, res)
     }
 }
 
-function removeFilesoOfUploads(res, filePath, message)
+function removeFilesOfUploads(res, filePath, message)
 {
     fs.unlink(filePath, (err) =>
     {

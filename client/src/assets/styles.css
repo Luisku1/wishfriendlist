@@ -84,11 +84,17 @@
 
 /*Users*/
 
+.users
+{
+    min-height: 600px;
+}
+
 .user-image-for-edit img{
     height: 60px;
 }
 
-.itemUser .imageUser
+.itemUser .imageUser,
+.itemPublication .imageUser
 {
     width: 75px;
     height: 75px;
@@ -97,13 +103,15 @@
     margin-right: 15px;
 }
 
-.itemUser .imageUser img
+.itemUser .imageUser img,
+.itemPublication .imageUser img
 {
     width: 100% !important;
 
 }
 
-.itemUser .userName
+.itemUser .userName,
+.itemPublication .userName
 {
     margin-top: 10px;
 }
@@ -129,12 +137,14 @@
     border-color: #7829c8 !important;
 }
 
-.btn-primary
+
+#followUnfollow .btn-primary
 {
     background-color: #7829c8 !important;
 }
 
-.btn-primary:hover
+
+#followUnfollow .btn-primary:hover
 {
     background-color: #ac2925 !important;
 }
@@ -148,10 +158,16 @@
 }
 
 
-#user-card 
+#user-card, #newPublication 
 {
     padding: 25px;
     width: 32%;
+}
+
+#newPublication
+{
+    padding: 16px;
+    padding-left: 8px;
 }
 
 @media screen and (max-width: 1200px)
@@ -247,4 +263,24 @@
     {
         display: none;
     }
+}
+
+
+/*Crear evento en sidebar*/
+
+.titleEvent
+{
+    padding-left: 32px;
+}
+
+
+/*TimeLine*/
+#events
+{
+    min-height: 600px;
+}
+
+#events .date
+{
+    color: gray;
 }

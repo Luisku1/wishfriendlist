@@ -7,6 +7,7 @@ import { SignUpComponent } from "./components/signUp/signUp.component";
 import { HomeComponent } from "./components/home/home.component";
 import { UserEditComponent } from './components/user-edit/user-edit.component';
 import { UsersComponent } from './components/users/users.component';
+import { TimelineComponent } from './components/timeline/timeline.component';
 
 const appRoutes: Routes = [
     {path: '', component: HomeComponent},
@@ -17,6 +18,7 @@ const appRoutes: Routes = [
     {path: 'editUser', component: UserEditComponent},
     {path: 'users/:page', component: UsersComponent},
     {path: 'users', component: UsersComponent},
+    {path: 'timeline', component: TimelineComponent},
     {path: '**', component: HomeComponent},
     
 

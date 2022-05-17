@@ -30,6 +30,7 @@ function savePublication(req, res)
     publication.text = params.text;
     publication.file = null;
     publication.createdAt = moment().unix();
+    publication.eventDate = params.eventDate;
     publication.user = req.user.sub;
 
 
@@ -50,6 +51,7 @@ function savePublication(req, res)
 function getPublications(req, res) 
 {
     var page = 1;
+
     if(req.params.page)
     {
         page = req.params.page;
@@ -71,6 +73,8 @@ function getPublications(req, res)
             followsClean.push(follow.followed);
         });
 
+        followsClean.push(req.user.sub)
+
         Publication.find({user: {"$in": followsClean}}).sort('-createdAt').populate('user').paginate(page, itemsPerPage, (err, publications, total) => {
 
             if(err) return res.status(500).send({message: 'Error al devolver el publicaciones'});
@@ -82,7 +86,8 @@ function getPublications(req, res)
                 totalItems: total,
                 pages: Math.ceil(total/itemsPerPage),
                 page: page,
-                publications
+                itemsPerPage: itemsPerPage,
+                publications: publications
             })
 
 
@@ -133,7 +138,7 @@ function uploadImage(req, res)
         var extSplit = fileName.split('\.');
         var fileExt = extSplit[1];
 
-        if(fileExt == 'png' || fileExt == 'jpg' || fileExt == 'gif')
+        if(fileExt == 'png' || fileExt == 'jpg' || fileExt == 'gif' || fileExt == 'jpeg')
         {
             Publication.findOne({'user':req.user.sub, '_id':publicationId}).exec((err, publication) =>
             {

@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { routing, appRoutingProviders } from './app.routing';
+import { MomentModule } from 'ngx-moment';
 
 //Componentes 
 import { AppRoutingModule } from './app-routing.module';
@@ -13,6 +14,7 @@ import { HomeComponent } from './components/home/home.component';
 import { UserEditComponent } from './components/user-edit/user-edit.component';
 import { UsersComponent } from './components/users/users.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { TimelineComponent } from './components/timeline/timeline.component';
 
 @NgModule({
   declarations: [
@@ -23,12 +25,14 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
     UserEditComponent,
     UsersComponent,
     SidebarComponent,
+    TimelineComponent
   ],
   imports: [
     BrowserModule,
     routing,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    MomentModule
   ],
   providers: [
     appRoutingProviders

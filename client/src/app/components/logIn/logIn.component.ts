@@ -46,14 +46,13 @@ export class LogInComponent implements OnInit
 
     onSubmit()
     {
-        console.log(this.user);
-        console.log(this.user.email);
+
         this._userService.signIn(this.user, false).subscribe(
 
             response => 
             {
                 this.identity = response.user;
-                console.log(this.identity); 
+                console.log(this.identity);
 
                 if(!this.identity || !this.identity._id)
                 {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       

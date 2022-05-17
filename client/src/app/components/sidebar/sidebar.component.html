@@ -65,3 +65,49 @@
 
 
 <!--Formulario para las publicaciones-->
+
+<div id="newPublication" class="col-lg-4 pull-left panel panel-default">
+
+    <div class="alert alert-success" *ngIf="status == 'success'"> 
+        Evento creado correctamente
+    </div>
+
+    <div class="alert alert-danger" *ngIf="status == 'error'"> 
+        El evento no se pudo crear
+    </div>
+
+    <form #newPubForm="ngForm" (ngSubmit) = "onSubmit(newPubForm);sendPublication($event)" class="col-lg-10">
+
+        <p>
+            <label>Nombre de tu evento</label>
+            <input type="text" name="nameEvent" placeholder="Nombre del evento" #nameEvent="ngModel" [(ngModel)]="publication.namePublication" class="form-control" required>
+
+            <span *ngIf="!nameEvent && nameEvent.touched">
+                El nombre del evento es clave
+            </span>
+        </p>
+
+        <p>
+            <label>Fecha del evento</label>
+            <input type="date" name="eventDate" placeholder="Fecha del evento" #eventDate="ngModel" [(ngModel)]="publication.eventDate" class="form-control" required>
+
+            <span *ngIf="!eventDate && eventDate.touched">
+                La fecha del evento es necesaria
+            </span>
+        </p>
+
+        <p>
+            <textarea name="text" placeholder="Agrega una descripción para tu evento" #text="ngModel" [(ngModel)]="publication.text" class="form-control" required></textarea>
+            <span *ngIf="!text.valid && text.touched">
+                ¡Agrega una descripción de tu evento!
+            </span>
+        </p>
+
+        <p>
+            <label>Sube una imagen para tu evento</label>
+            <input type="file" placeholder="Subir imagen"/>
+        </p>
+
+        <input type="submit" value="Crear" class="btn btn-success" [disabled]="!newPubForm.form.valid">
+    </form>
+</div>
