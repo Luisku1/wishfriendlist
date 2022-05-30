@@ -1,41 +1,38 @@
 <div class="col-lg-8">
     <h1 class="h1-strong"> {{title}} 
-
         <button class="btn btn-success btn-sm pull-right" (click) = "refresh()"> Mostrar nuevas </button>
     </h1>
 
     <div id="events">
-        <div *ngFor="let publication of publications" class="itemPublication">
+        <div *ngFor="let wishObject of wishList" class="itemPublication">
             <div class="panel panel-default">
                 <div class="panel-body">
     
                     <div class="imageUser pull-left">
-                        <a [routerLink]="['/profile', publication.user._id]">
-                            <img src="{{url + 'get-image-user/' + publication.user.profileImage}}" *ngIf="publication.user.profileImage"/>
-                            <img src="assets/userDefaultImage.png" *ngIf="!publication.user.profileImage" class="avatarDefault">
+                        <a [routerLink]="['/profile', wishObject.user._id]">
+                            <img src="{{url + 'get-image-user/' + wishObject.user.profileImage}}" *ngIf="wishObject.user.profileImage"/>
+                            <img src="assets/userDefaultImage.png" *ngIf="!wishObject.user.profileImage" class="avatarDefault">
                         </a>
                     </div>
     
                     <div>
-                        <a [routerLink]="['/profile', publication.user._id]" class="userName"> {{publication.user.name + ' ' + publication.user.lastName}} </a>
-                        &nbsp;|&nbsp;
-                        <span class="date"> {{ (publication.createdAt | amFromUnix) | amLocale: 'es' | amTimeAgo }}</span>
+                        <a [routerLink]="['/profile', wishObject.user._id]" class="userName"> {{wishObject.user.name + ' ' + wishObject.user.lastName}} </a>
                     </div>
                     
-                    <h5> {{publication.namePublication}}</h5>
+                    <h5> {{wishObject.name}}</h5>
                 
                     <h4 class="publicationText pull-left">
-                        {{publication.text}}
+                        {{wishObject.price}}
                     </h4>
 
-                    <div class="pull-right"  *ngIf="publication.user._id == identity._id">
+                    <div class="pull-right"  *ngIf="wishObject.user._id == identity._id">
 
-                        <a href="#myModal{{publication._id}}" role="button" class="btn btn-large btn-danger"
+                        <a href="#myModal{{wishObject._id}}" role="button" class="btn btn-large btn-danger"
                         data-toggle="modal">
                             <span class="glyphicon glyphicon-trash"></span>
                         </a>
 
-                        <div id="myModal{{publication._id}}" class="modal fade">
+                        <div id="myModal{{wishObject._id}}" class="modal fade">
 
                             <div class="modal-dialog">
                                 <div class="modal-content">
@@ -47,12 +44,12 @@
 
                                     </div>
                                     <div class="modal-body">
-                                        <p>¿En verdad quieres eliminar esta publicación?</p>
-                                        <p class="text-warning"><small>No la podrás recuperar. Tendrás que crearla de nuevo</small></p>
+                                        <p>¿En verdad quieres eliminar este artículo de tu wishlist?</p>
+                                        <p class="text-warning"><small>No lo podrás recuperar. Tendrás que crearla de nuevo</small></p>
                                     </div>
                                     <div class="modal-footer">
                                         <button class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                                        <button (click)="deletePublication(publication._id)"type="button" data-dismiss="modal" class="btn btn-primary">
+                                        <button (click)="deleteWishObject(wishObject._id)"type="button" data-dismiss="modal" class="btn btn-primary">
                                             Borrar publicación
                                         </button>
                                     </div>
@@ -60,16 +57,12 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="col-lg-12" *ngIf="publication.file">
-                        <img src="{{url + 'get-image-pub/' + publication.file}}" class="col-lg-5">
-                    </div>
                 </div>
             </div>
         </div>
     </div>
     
-    <div class="col-lg-12 text-center" *ngIf="publications && publications.length">
+    <div class="col-lg-12 text-center" *ngIf="wishList && wishList.length">
         <p>
             <button class="btn btn-success" (click)="loadMore()" *ngIf="!noMore">
                 Ver más eventos

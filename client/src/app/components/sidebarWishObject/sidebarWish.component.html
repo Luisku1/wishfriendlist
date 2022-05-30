@@ -37,7 +37,7 @@
         </div>
 
         <div class="statsData">
-            <a [routerLink]="['/followme', identity._id, 1]">
+            <a href="#">
                 <span class="labelStats">
                     Seguidores
                 </span>
@@ -48,7 +48,7 @@
         </div>
 
         <div class="statsData">
-            <a [routerLink]="['/profile', identity._id]">
+            <a href="#">
                 <span class="labelStats">
                     Eventos creados
                 </span>
@@ -63,42 +63,41 @@
 </div>
 
 
-<!--Formulario para las publicaciones-->
+<!--Formulario para los wish objects-->
 
 <div id="newPublication" class="col-lg-4 pull-left panel panel-default">
 
     <div class="alert alert-success" *ngIf="status == 'success'"> 
-        Evento creado correctamente
+        Artículo añadido a la wishlist correctamente
     </div>
 
     <div class="alert alert-danger" *ngIf="status == 'error'"> 
-        El evento no se pudo crear
+        No se pudo añadir este artículo
     </div>
 
     <form #newPubForm="ngForm" (ngSubmit) = "onSubmit(newPubForm, $event)" class="col-lg-10">
 
         <p>
-            <label>Nombre de tu evento</label>
-            <input type="text" name="nameEvent" placeholder="Nombre del evento" #nameEvent="ngModel" [(ngModel)]="publication.namePublication" class="form-control" required>
-
-            <span *ngIf="!nameEvent && nameEvent.touched">
+            <label>Nombre de tu wish object</label>
+            <input type="text" name="name" placeholder="Nombre del artículo" #name="ngModel" [(ngModel)]="wishObject.name" class="form-control" required>
+            <span *ngIf="!name && name.touched">
                 El nombre del evento es clave
             </span>
         </p>
 
         <p>
-            <label>Fecha del evento</label>
-            <input type="date" name="eventDate" placeholder="Fecha del evento" #eventDate="ngModel" [(ngModel)]="publication.eventDate" class="form-control" required>
-
-            <span *ngIf="!eventDate && eventDate.touched">
+            <label>Precio del artículo</label>
+            <input type="date" name="price" placeholder="Precio del artículo" #eventDate="ngModel" [(ngModel)]="wishObject.price" class="form-control" required>
+            <span *ngIf="!price && price.touched">
                 La fecha del evento es necesaria
             </span>
         </p>
 
         <p>
-            <textarea name="text" placeholder="Agrega una descripción para tu evento" #text="ngModel" [(ngModel)]="publication.text" class="form-control" required></textarea>
-            <span *ngIf="!text.valid && text.touched">
-                ¡Agrega una descripción de tu evento!
+            <label>URL del artículo</label>
+            <input type="date" name="url" placeholder="URL del artículo" #eventDate="ngModel" [(ngModel)]="wishObject.objectUrl" class="form-control" required>
+            <span *ngIf="!url && url.touched">
+                La fecha del evento es necesaria
             </span>
         </p>
 

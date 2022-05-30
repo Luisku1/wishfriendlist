@@ -10,6 +10,7 @@ var app = express();
 var userRoutes = require('./routes/user');
 var followRoutes = require('./routes/follow');
 var publicationRoutes = require('./routes/publication');
+var wishObjectRoutes = require('./routes/wishObject');
 
 //middlewares
 
@@ -32,6 +33,7 @@ app.use((req, res, next) => {
 app.use('/api', userRoutes);
 app.use('/api', followRoutes);
 app.use('/api', publicationRoutes);
+app.use('/api', wishObjectRoutes);
 
 
 //Exportar

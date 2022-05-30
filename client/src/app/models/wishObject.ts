@@ -4,8 +4,9 @@ export class WishObject{
 
         public _id: string,
         public name : String,
+        public price : String,
         public objectUrl : String,
-        public user : string
-
+        public user : any
+        
     ){}
 }

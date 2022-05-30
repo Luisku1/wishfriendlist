@@ -7,7 +7,7 @@ var port = 3800;
 mongoose.Promise = global.Promise;
 
 
-mongoose.connect('mongodb://localhost:27017/wishfriendlist', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb://localhost:27017/wishfriendlist', { useNewUrlParser: true, useUnifiedTopology: true, useMongoClient: true })
     .then(() => {
 
         console.log("La conexión a la base de datos es correcta");

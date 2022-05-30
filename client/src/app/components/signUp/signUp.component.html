@@ -38,11 +38,9 @@
 
         <p>
             <label>Fecha de Nacimiento</label>
-            <input type="text" name = "birthDay" #birthDay="ngModel" [(ngModel)]="user.birthDay" class="form-control" required/>
-            <span *ngIf="!birthDay.valid && birthDay.touched">
-
+            <input type="date" name = "birthDate" #birthDate="ngModel" [(ngModel)]="user.birthDate" class="form-control" required/>
+            <span *ngIf="!birthDate.valid && birthDate.touched">
                 La fecha de nacimiento es obligatoria
-
             </span>
         </p>
 

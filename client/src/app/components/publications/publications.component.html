@@ -1,0 +1,43 @@
+<div class="col-lg-12">
+    <h1 class="h1-strong"> {{title}} 
+
+        <button class="btn btn-success btn-sm pull-right" (click) = "refresh()"> Mostrar nuevas </button>
+    </h1>
+
+    <div id="events">
+        <div *ngFor="let publication of publications" class="itemPublication">
+            <div class="panel panel-default">
+                <div class="panel-body">
+    
+                    <div class="imageUser pull-left">
+                        <a href="#">
+                            <img src="{{url + 'get-image-user/' + publication.user.profileImage}}" *ngIf="publication.user.profileImage"/>
+                            <img src="assets/userDefaultImage.png" *ngIf="!publication.user.profileImage" class="avatarDefault">
+                        </a>
+                    </div>
+    
+                    <div>
+                        <span class="userName"> {{publication.user.name + ' ' + publication.user.lastName}} </span>
+                        &nbsp;|&nbsp;
+                        <span class="date"> {{ (publication.createdAt | amFromUnix) | amLocale: 'es' | amTimeAgo }}</span>
+                    </div>
+                    
+                    <h5> {{publication.namePublication}}</h5>
+                
+                    <h4 class="publicationText pull-left">
+                        {{publication.text}}
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-12 text-center" *ngIf="publications && publications.length">
+        <p>
+            <button class="btn btn-success" (click)="loadMore()" *ngIf="!noMore">
+                Ver más eventos
+            </button>
+        </p>
+    </div>
+
+</div>

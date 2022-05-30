@@ -38,12 +38,12 @@ function signUpUser(req, res){
     var params = req.body;
     var user = new User();
 
-    if(params.name && params.lastName && params.birthDay && params.phoneNumber
+    if(params.name && params.lastName && params.birthDate && params.phoneNumber
         && params.email && params.password)
     {
         user.name = params.name;
         user.lastName = params.lastName;
-        user.birthDay = params.birthDay;
+        user.birthDate = params.birthDate;
         user.phoneNumber = params.phoneNumber;
         user.email = params.email;
         user.profileImage = null;
@@ -206,40 +206,6 @@ async function followThisUser(identityUserId, userId)
 
 async function followUserIds(userId)
 {
-    /* var following = await Follow.find({"user": userId}).select({'_id': 0, '__v':0, 'user':0}).exec((_err, follows) =>
-    {
-        return follows;
-    });
-
-    var followed = await Follow.find({"followed": userId}).select({'_id': 0, '__v':0, 'followed':0}).exec((_err, follows) =>
-    {
-        return follows;
-    });
-
-    //procesar following ids
-    var followingClean = [];
-
-    following.forEach((follow) =>
-    {
-        followingClean.push(follow.followed);
-
-    });
-
-    //procesar followed ids
-    var followedClean = [];
-
-    followed.forEach((follow) =>
-    {
-        followedClean.push(follow.user);
-
-    });
-
-    return {
-
-        following: following,
-        followed: followed
-    } */
-
     try{
         //Obejter los usuarios que seguimos          //El select es para mostrar los campos que yo quiera
         var following = await Follow.find({'user': userId }).select({'_id':0, '__v':0, 'user': 0}).exec()
@@ -341,7 +307,7 @@ function getCounters(req, res)
 
 async function getCountFollow(user_id) {
 
-    var following = await Follow.countDocuments({ user: user_id })
+    var following = await Follow.count({ user: user_id })
         .exec()
         .then((count) => 
         {
@@ -353,7 +319,7 @@ async function getCountFollow(user_id) {
             return handleError(err); 
         });
  
-    var followed = await Follow.countDocuments({ followed: user_id })
+    var followed = await Follow.count({ followed: user_id })
         .exec()
         .then((count) => 
         {
@@ -363,7 +329,7 @@ async function getCountFollow(user_id) {
             return handleError(err); 
         });
 
-    var publications = await Publication.countDocuments({ user: user_id})
+    var publications = await Publication.count({ user: user_id})
         .exec()
         .then((count) => {
           return count;
@@ -484,9 +450,9 @@ function getImageFile(req, res)
         
         } else {
 
-            res.stauts(200).send({message: 'No existe la imagen...'})
+            res.status(200).send({message: 'No existe la imagen...'})
         }
-    })
+    });
 }
 
 

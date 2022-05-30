@@ -16,7 +16,7 @@
                     </div>
                     <div class="userName pull-left">
                         <p class="fullName">
-                            <a href="#">
+                            <a [routerLink]="['/profile', user._id]">
                                 {{user.name + ' ' + user.lastName}}
                             </a>
                         </p>

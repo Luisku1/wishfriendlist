@@ -1,20 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
-import { Publication } from '../../models/publication';
-import { PublicationService } from '../../services/publication.service';
+import { WishObject } from '../../models/wishObject';
+import { WishObjectService } from '../../services/wishObject.service';
 import { GLOBAL } from '../../services/global';
-import { Moment } from 'moment';
 
 @Component(
     {
-        selector: 'timeline',
-        templateUrl: './timeline.component.html',
-        providers: [UserService, PublicationService],
+        selector: 'wishlist',
+        templateUrl: './wishlist.component.html',
+        providers: [UserService, WishObjectService],
     }
 )
 
-export class TimelineComponent implements OnInit
+export class WishListComponent implements OnInit
 {
 
     public title: string;
@@ -23,21 +22,20 @@ export class TimelineComponent implements OnInit
     public url: string;
     public status: string;
     public page:any;
-    public publications: Publication[];
+    public wishList: WishObject[];
     public total:any;
     public pages:any;
     public itemsPerPage:any;
-    public showImage: any;
     public noMore:boolean;
 
     constructor(
         private _route: ActivatedRoute,
         private _router: Router,
         private _userService: UserService,
-        private _publicationService: PublicationService
+        private _wishObjectService: WishObjectService
     )
     {
-        this.title = 'Timeline'
+        this.title = 'Wishlist'
         this.identity = this._userService.getIdentity();
         this.url = GLOBAL.url;
         this.token = this._userService.getToken();
@@ -47,24 +45,24 @@ export class TimelineComponent implements OnInit
 
     ngOnInit()
     {
-        console.log('timeline.component cargado');
-        this.getPublications(this.page);
+        console.log('wishList.component cargado');
+        this.getWishList(this.page);
     }
 
-    getPublications(page:any, loading:boolean = false)
+    getWishList(page:any, loading:boolean = false)
     {
-        this._publicationService.getPublications(this.token, page).subscribe
+        this._wishObjectService.getWishList(this.token, page).subscribe
         (
             response =>
             {
-                if(response.publications)
+                if(response.wishList)
                 {
                     this.total = response.totalItens;
                     this.pages = response.pages;
                     this.itemsPerPage = response.itemsPerPage;
 
                     this.status = 'success';
-                    console.log(this.publications);
+                    console.log(this.wishList);
 
                     if(this.total <= 4)
                     {
@@ -73,17 +71,15 @@ export class TimelineComponent implements OnInit
 
                     if(!loading)
                     {
-                        this.publications = response.publications;
+                        this.wishList = response.wishList;
                     
                     } else {
 
-                        var arrayPublications = this.publications;
+                        var arrayPublications = this.wishList;
                         var arrayPivot = response.publications;
-
-                        this.publications = arrayPublications.concat(arrayPivot);
+                        this.wishList = arrayPublications.concat(arrayPivot);
 
                         $("html, body").animate({ scrollTop: $('html').prop("scrollHeight")}, 500);
-
                     }
 
                     if(this.pages == 0)
@@ -93,7 +89,7 @@ export class TimelineComponent implements OnInit
 
                     if(page > this.pages)
                     {
-                        this._router.navigate(['/home']);
+                        //this._router.navigate(['/home']);
                     }
 
                 } else {
@@ -122,23 +118,18 @@ export class TimelineComponent implements OnInit
             this.noMore = true;
         }
 
-        this.getPublications(this.page, true);
+        this.getWishList(this.page, true);
 
     }
 
     refresh()
     {
-        this.getPublications(1);
+        this.getWishList(1);
     }
 
-    showThisImage(id: any)
+    deleteWishObject(id: any)
     {
-        this.showImage = id;
-    }
-
-    deletePublication(id: any)
-    {
-        this._publicationService.deletePublication(this.token, id).subscribe(
+        this._wishObjectService.deleteWishObject(this.token, id).subscribe(
 
             response => 
             {

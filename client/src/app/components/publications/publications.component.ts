@@ -1,20 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { Publication } from '../../models/publication';
 import { PublicationService } from '../../services/publication.service';
 import { GLOBAL } from '../../services/global';
-import { Moment } from 'moment';
 
 @Component(
     {
-        selector: 'timeline',
-        templateUrl: './timeline.component.html',
+        selector: 'publications',
+        templateUrl: './publications.component.html',
         providers: [UserService, PublicationService],
     }
 )
 
-export class TimelineComponent implements OnInit
+export class PublicationsComponent implements OnInit
 {
 
     public title: string;
@@ -27,8 +26,8 @@ export class TimelineComponent implements OnInit
     public total:any;
     public pages:any;
     public itemsPerPage:any;
-    public showImage: any;
     public noMore:boolean;
+    @Input() user: string;
 
     constructor(
         private _route: ActivatedRoute,
@@ -48,12 +47,12 @@ export class TimelineComponent implements OnInit
     ngOnInit()
     {
         console.log('timeline.component cargado');
-        this.getPublications(this.page);
+        this.getPublications(this.user, this.page);
     }
 
-    getPublications(page:any, loading:boolean = false)
+    getPublications(user: any, page:any, loading:boolean = false)
     {
-        this._publicationService.getPublications(this.token, page).subscribe
+        this._publicationService.getPublicationsUser(this.token, user, page).subscribe
         (
             response =>
             {
@@ -128,26 +127,6 @@ export class TimelineComponent implements OnInit
 
     refresh()
     {
-        this.getPublications(1);
-    }
-
-    showThisImage(id: any)
-    {
-        this.showImage = id;
-    }
-
-    deletePublication(id: any)
-    {
-        this._publicationService.deletePublication(this.token, id).subscribe(
-
-            response => 
-            {
-                this.refresh()
-            },
-            error =>
-            {
-                console.log(<any>error)
-            }
-        )
+        this.getPublications(this.user, 1);
     }
 }
