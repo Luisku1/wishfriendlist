@@ -18,7 +18,7 @@ import { WishObjectService } from '../../services/wishObject.service';
 
 
 
-export class SidebarComponent implements OnInit, DoCheck
+export class SideBarWishComponent implements OnInit, DoCheck
 {
     public identity: any;
     public token: any;
@@ -61,9 +61,9 @@ export class SidebarComponent implements OnInit, DoCheck
 
             response => 
             {
-                if(response.publication)
+                if(response.wishObject)
                 {
-                    this._router.navigate(['/wishlist']);
+                    this._router.navigate(['/wishlist', this.wishObject.user]);
                     
                     } else {
 

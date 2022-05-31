@@ -27,7 +27,7 @@ const appRoutes: Routes = [
     {path: 'profile/:id', component: ProfileComponent},
     {path: 'siguiendo/:id/:page', component: FollowingComponent},
     {path: 'followme/:id/:page', component: FollowedComponent},
-    {path: 'wishlist/:id/page', component: WishListComponent},
+    {path: 'wishlist/:id/:page', component: WishListComponent},
     {path: '**', component: HomeComponent}
 
 ];

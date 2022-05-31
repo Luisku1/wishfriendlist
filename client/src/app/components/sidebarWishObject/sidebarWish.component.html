@@ -1,4 +1,4 @@
-<div class="col-lg-4 sidebar-32">
+<!--<div class="col-lg-4 sidebar-32">
     <h1 id="misDatos" class="h1-strong"> Hola, {{identity.name }} </h1>
 </div>
 
@@ -60,7 +60,8 @@
 
     </div>
 
-</div>
+</div> -->
+
 
 
 <!--Formulario para los wish objects-->
@@ -81,29 +82,24 @@
             <label>Nombre de tu wish object</label>
             <input type="text" name="name" placeholder="Nombre del artículo" #name="ngModel" [(ngModel)]="wishObject.name" class="form-control" required>
             <span *ngIf="!name && name.touched">
-                El nombre del evento es clave
+                El nombre del artículo es clave
             </span>
         </p>
 
         <p>
             <label>Precio del artículo</label>
-            <input type="date" name="price" placeholder="Precio del artículo" #eventDate="ngModel" [(ngModel)]="wishObject.price" class="form-control" required>
+            <input type="text" name="price" placeholder="Precio del artículo" #price="ngModel" [(ngModel)]="wishObject.price" class="form-control" required>
             <span *ngIf="!price && price.touched">
-                La fecha del evento es necesaria
+                El precio del artículo es necesario
             </span>
         </p>
 
         <p>
             <label>URL del artículo</label>
-            <input type="date" name="url" placeholder="URL del artículo" #eventDate="ngModel" [(ngModel)]="wishObject.objectUrl" class="form-control" required>
+            <input type="text" name="url" placeholder="URL del artículo" #url="ngModel" [(ngModel)]="wishObject.objectUrl" class="form-control" required>
             <span *ngIf="!url && url.touched">
-                La fecha del evento es necesaria
+                La Url de tu artículo es necesaria
             </span>
-        </p>
-
-        <p>
-            <label>Sube una imagen para tu evento</label>
-            <input type="file" placeholder="Subir imagen" (change)="fileChangeEvent($event)"/>
         </p>
 
         <input type="submit" value="Crear" class="btn btn-success" [disabled]="!newPubForm.form.valid">

@@ -27,7 +27,7 @@ function saveWishObject(req, res)
         if(err) return res.status(500).send({message: 'Error al guardar la publicación'});
         if(!wishObjectStored) return res.status(500).send({message: 'La publicación no ha sido guardada'});
 
-        return res.status(200).send({publication: wishObjectStored});
+        return res.status(200).send({wishObject: wishObjectStored});
     })
 }
 
@@ -49,7 +49,7 @@ function getWishObjectsUser(req, res)
         userId = req.params.userId;
     }
 
-    WishObject.find({user: userId}).sort('-createdAt').paginate(page, itemsPerPage, (err, wishList, total) => {
+    WishObject.find({user: userId}).sort('-createdAt').populate('user').paginate(page, itemsPerPage, (err, wishList, total) => {
 
         if(err) return res.status(500).send({message: 'Error al devolver la lista de deseos'});
 
@@ -72,7 +72,7 @@ function deleteWishObject(req, res)
 
 
 
-    Publication.find({'user': req.user.sub, '_id':wishObjectId}).remove((err) => {
+    WishObject.find({'user': req.user.sub, '_id':wishObjectId}).remove((err) => {
 
         if(err) return res.status(500).send({message: 'Error al eliminar objetos '});
         return res.status(200).send({message: 'Publicación eliminada correctamente'});

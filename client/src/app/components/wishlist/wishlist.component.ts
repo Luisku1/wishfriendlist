@@ -3,6 +3,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { WishObject } from '../../models/wishObject';
 import { WishObjectService } from '../../services/wishObject.service';
+import { User } from '../../models/user';
 import { GLOBAL } from '../../services/global';
 
 @Component(
@@ -22,7 +23,10 @@ export class WishListComponent implements OnInit
     public url: string;
     public status: string;
     public page:any;
+    public nextPage: any;
+    public prevPage: any;
     public wishList: WishObject[];
+    public userPageId : any;
     public total:any;
     public pages:any;
     public itemsPerPage:any;
@@ -35,7 +39,7 @@ export class WishListComponent implements OnInit
         private _wishObjectService: WishObjectService
     )
     {
-        this.title = 'Wishlist'
+        this.title = 'Wishlist de'
         this.identity = this._userService.getIdentity();
         this.url = GLOBAL.url;
         this.token = this._userService.getToken();
@@ -46,98 +50,133 @@ export class WishListComponent implements OnInit
     ngOnInit()
     {
         console.log('wishList.component cargado');
-        this.getWishList(this.page);
+        this.actualPage();
     }
 
-    getWishList(page:any, loading:boolean = false)
+    actualPage()
     {
-        this._wishObjectService.getWishList(this.token, page).subscribe
-        (
-            response =>
+        this._route.params.subscribe(
+            params =>
             {
-                if(response.wishList)
+                let page = +params['page?'];
+                this.page = page;
+                let userId = params['id'];
+                this.userPageId = userId
+
+                if(!params['page?'])
                 {
-                    this.total = response.totalItens;
+                    page = 1;
+                }
+
+                if(!page)
+                {
+                    page = 1;
+                
+                } else {
+
+                    this.nextPage = page + 1;
+                    this.prevPage = page - 1;
+
+                    if(this.prevPage <= 0)
+                    {
+                        this.prevPage = 1;
+                    }
+                }
+                this.getUser(userId, page);
+            }
+        );
+    }
+
+    getWishList(userId: any, page: any)
+    {
+        this._wishObjectService.getWishList(this.token, userId, page).subscribe(
+            response => {
+
+                if(!response.wishList)
+                {
+                    this.status = 'error';
+                
+                } else {
+
+                    this.total = response.totalItems;
                     this.pages = response.pages;
-                    this.itemsPerPage = response.itemsPerPage;
-
-                    this.status = 'success';
-                    console.log(this.wishList);
-
-                    if(this.total <= 4)
-                    {
-                        this.noMore = true;
-                    }
-
-                    if(!loading)
-                    {
-                        this.wishList = response.wishList;
-                    
-                    } else {
-
-                        var arrayPublications = this.wishList;
-                        var arrayPivot = response.publications;
-                        this.wishList = arrayPublications.concat(arrayPivot);
-
-                        $("html, body").animate({ scrollTop: $('html').prop("scrollHeight")}, 500);
-                    }
-
-                    if(this.pages == 0)
-                    {
-                        page = 0;
-                    }
+                    this.wishList = response.wishList;
 
                     if(page > this.pages)
                     {
-                        //this._router.navigate(['/home']);
+                        this._router.navigate(['/wishlist', 1]);
                     }
-
-                } else {
-
-                    this.status = 'error';
                 }
+
             },
-            error => 
-            {
-                var errorMessage = <any>error;
+            error => {
+
+                var errorMessage = <any> error;
+                console.log(errorMessage);
+
                 if(errorMessage != null)
                 {
                     this.status = 'error';
                 }
-            }   
+            }
         );
     }
-   
 
-    loadMore()
+    public user: User;
+
+    getUser(userId : any, page: any)
     {
-        this.page += 1;
+        this._userService.getUser(userId).subscribe
+        (
+            response => 
+            {
+                if(response.user)
+                {
+                    this.user = response.user;
+                    
+                    this.getWishList(userId, page);
+                
+                } else {
 
-        if(this.page == this.pages)
-        {
-            this.noMore = true;
-        }
+                    this._router.navigate(['/home']);
+                }
+            },
+            error => 
+            {
+                var errorMessage = <any> error;
+                console.log(errorMessage);
 
-        this.getWishList(this.page, true);
-
+                if(errorMessage != null)
+                {
+                    this.status = 'error';
+                }
+            }
+        )
     }
 
     refresh()
     {
-        this.getWishList(1);
+     
+        this.actualPage();
     }
 
-    deleteWishObject(id: any)
+    deleteWishObject(objectId: any)
     {
-        this._wishObjectService.deleteWishObject(this.token, id).subscribe(
-
-            response => 
+        this._wishObjectService.deleteWishObject(this.token, objectId).subscribe
+        (
+            response =>
             {
-                this.refresh()
+                this.refresh();
             },
             error =>
             {
-                console.log(<any>error)
+                var errorMessage = <any> error;
+                console.log(errorMessage);
+
+                if(errorMessage != null)
+                {
+                    this.status = 'error';
+                }
             }
         )
     }
