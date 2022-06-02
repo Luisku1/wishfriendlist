@@ -1,5 +1,5 @@
 <div class="col-lg-8">
-    <h1 class="h1-strong"> {{title}} {{user.name}}
+    <h1 class="h1-strong" *ngIf="user"> {{title}} {{user.name}}
     </h1>
 
     <div id="events" *ngIf="wishList">
@@ -13,6 +13,8 @@
                     
                     <h5> {{wishObject.name}}</h5>
                 
+                    <h5> {{wishObject.objectUrl}}</h5>
+
                     <h4 class="publicationText pull-left">
                         {{wishObject.price}}
                     </h4>

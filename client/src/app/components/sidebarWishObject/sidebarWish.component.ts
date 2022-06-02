@@ -63,11 +63,11 @@ export class SideBarWishComponent implements OnInit, DoCheck
             {
                 if(response.wishObject)
                 {
-                    this._router.navigate(['/wishlist', this.wishObject.user]);
+                    this._router.navigate(['/wishlist', this.wishObject.user, 1]);
                     
                     } else {
 
-                        this._router.navigate(['/wishlist']);
+                        //this._router.navigate(['/wishlist', this.identity._id, 1]);
                     }
                     
                     this.status = 'success';

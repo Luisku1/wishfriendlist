@@ -25,7 +25,7 @@
         </p>
 
         <p>
-            <label>Correo electrónico</label>
+            <label>Contraseña</label>
             <input type="password" name="password" placeholder="Contraseña" #password="ngModel" [(ngModel)]="user.password" class="form-control" required/>
             <span *ngIf="!password.valid && password.touched">
                 La contraseña es obligatoria

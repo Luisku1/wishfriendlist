@@ -63,7 +63,6 @@ export class PublicationsComponent implements OnInit
                     this.itemsPerPage = response.itemsPerPage;
 
                     this.status = 'success';
-                    console.log(this.publications);
 
                     if(this.total <= 4)
                     {

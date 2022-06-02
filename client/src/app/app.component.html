@@ -64,13 +64,19 @@
               <li>
                 <a [routerLink]="['/profile', identity._id]">
                   <span class="glyphicon glyphicon-user"></span>
-                  Mi perfil
+                  Mi Perfil
                 </a>
               </li>
               <li>
                 <a [routerLink]="['/myData']">
                   <span class="glyphicon glyphicon-cog"></span>
-                  Mis datos
+                  Mis Datos
+                </a>
+              </li>
+              <li>
+                <a [routerLink]="['/wishlist', identity._id, 1]">
+                  <span class="glyphicon glyphicon-cog"></span>
+                  Mi WishList
                 </a>
               </li>
               <li>

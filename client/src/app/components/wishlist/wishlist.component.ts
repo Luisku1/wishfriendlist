@@ -58,12 +58,12 @@ export class WishListComponent implements OnInit
         this._route.params.subscribe(
             params =>
             {
-                let page = +params['page?'];
+                let page = +params['page'];
                 this.page = page;
                 let userId = params['id'];
                 this.userPageId = userId
 
-                if(!params['page?'])
+                if(!params['page'])
                 {
                     page = 1;
                 }
@@ -104,7 +104,7 @@ export class WishListComponent implements OnInit
 
                     if(page > this.pages)
                     {
-                        this._router.navigate(['/wishlist', 1]);
+                        this._router.navigate(['/wishlist', this.identity._id, 1]);
                     }
                 }
 

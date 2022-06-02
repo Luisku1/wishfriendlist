@@ -30,11 +30,11 @@ function unfollow(req, res)
     var followedId = req.params.id;
 
     Follow.find({'user': userId, 'followed': followedId}).deleteOne(err =>
-        {
-            if(err) return res.status(500).send({message: 'Error al dejar de seguir'});
+    {
+        if(err) return res.status(500).send({message: 'Error al dejar de seguir'});
 
-            return res.status(200).send({message: 'El usuario se ha dejado de seguir'});
-        });
+        return res.status(200).send({message: 'El usuario se ha dejado de seguir'});
+    });
 }
 
 
@@ -47,7 +47,7 @@ function getFollowingUsers(req, res)
         userId = req.params.id;
 
     }
-
+    
     var page = 1;
 
     if(req.params.page)

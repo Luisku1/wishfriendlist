@@ -56,12 +56,12 @@ export class FollowingComponent implements OnInit
         this._route.params.subscribe(
             params =>
             {
-                let page = +params['page?'];
-                this.page = page;
                 let userId = params['id'];
                 this.userPageId = userId
+                let page = +params['page'];
+                this.page = page;
 
-                if(!params['page?'])
+                if(!params['page'])
                 {
                     page = 1;
                 }
@@ -105,7 +105,7 @@ export class FollowingComponent implements OnInit
 
                     if(page > this.pages)
                     {
-                        this._router.navigate(['/siguiendo', 1]);
+                        this._router.navigate(['/siguiendo', userId, 1]);
                     }
                 }
 
@@ -134,8 +134,7 @@ export class FollowingComponent implements OnInit
                 if(response.user)
                 {
                     this.user = response.user;
-                    
-                this.getFollowing(userId, page);
+                    this.getFollowing(userId, page);
                 
                 } else {
 

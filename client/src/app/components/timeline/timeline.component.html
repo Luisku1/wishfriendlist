@@ -8,61 +8,68 @@
         <div *ngFor="let publication of publications" class="itemPublication">
             <div class="panel panel-default">
                 <div class="panel-body">
-    
-                    <div class="imageUser pull-left">
-                        <a [routerLink]="['/profile', publication.user._id]">
-                            <img src="{{url + 'get-image-user/' + publication.user.profileImage}}" *ngIf="publication.user.profileImage"/>
-                            <img src="assets/userDefaultImage.png" *ngIf="!publication.user.profileImage" class="avatarDefault">
-                        </a>
-                    </div>
-    
+
                     <div>
-                        <a [routerLink]="['/profile', publication.user._id]" class="userName"> {{publication.user.name + ' ' + publication.user.lastName}} </a>
-                        &nbsp;|&nbsp;
-                        <span class="date"> {{ (publication.createdAt | amFromUnix) | amLocale: 'es' | amTimeAgo }}</span>
-                    </div>
+
+                        <div class="imageUser pull-left">
+                            <a [routerLink]="['/profile', publication.user._id]">
+                                <img src="{{url + 'get-image-user/' + publication.user.profileImage}}" *ngIf="publication.user.profileImage"/>
+                                <img src="assets/userDefaultImage.png" *ngIf="!publication.user.profileImage" class="avatarDefault">
+                            </a>
+                        </div>
+        
+                        <div>
+                            <a [routerLink]="['/profile', publication.user._id]" class="userName"> {{publication.user.name + ' ' + publication.user.lastName}} </a>
+                            &nbsp;|&nbsp;
+                            <span class="date"> {{ (publication.createdAt | amFromUnix) | amLocale: 'es' | amTimeAgo }}</span>
+                        </div>
+                        
+                        <h5> {{publication.namePublication}}</h5>
                     
-                    <h5> {{publication.namePublication}}</h5>
-                
-                    <h4 class="publicationText pull-left">
-                        {{publication.text}}
-                    </h4>
-
-                    <div class="pull-right"  *ngIf="publication.user._id == identity._id">
-
-                        <a href="#myModal{{publication._id}}" role="button" class="btn btn-large btn-danger"
-                        data-toggle="modal">
-                            <span class="glyphicon glyphicon-trash"></span>
-                        </a>
-
-                        <div id="myModal{{publication._id}}" class="modal fade">
-
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button class="close" type="button" data-dismiss="modal" aria-hidden="true">
-                                            &times;
-                                        </button>
-                                        <h4 class="modal-title">Confirmación</h4>
-
-                                    </div>
-                                    <div class="modal-body">
-                                        <p>¿En verdad quieres eliminar esta publicación?</p>
-                                        <p class="text-warning"><small>No la podrás recuperar. Tendrás que crearla de nuevo</small></p>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                                        <button (click)="deletePublication(publication._id)"type="button" data-dismiss="modal" class="btn btn-primary">
-                                            Borrar publicación
-                                        </button>
+                        <h4 class="publicationText pull-left">
+                            {{publication.text}}
+                        </h4>
+    
+                        <div class="pull-right"  *ngIf="publication.user._id == identity._id">
+    
+                            <a href="#myModal{{publication._id}}" role="button" class="btn btn-large btn-danger"
+                            data-toggle="modal">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </a>
+    
+                            <div id="myModal{{publication._id}}" class="modal fade">
+    
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button class="close" type="button" data-dismiss="modal" aria-hidden="true">
+                                                &times;
+                                            </button>
+                                            <h4 class="modal-title">Confirmación</h4>
+    
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>¿En verdad quieres eliminar esta publicación?</p>
+                                            <p class="text-warning"><small>No la podrás recuperar. Tendrás que crearla de nuevo</small></p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                            <button (click)="deletePublication(publication._id)"type="button" data-dismiss="modal" class="btn btn-primary">
+                                                Borrar publicación
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+
                     </div>
+    
+                    
 
                     <div class="col-lg-12" *ngIf="publication.file">
-                        <img src="{{url + 'get-image-pub/' + publication.file}}" class="col-lg-5">
+                        <img src="{{url + 'get-image-pub/' + publication.file}}" class="col-lg-12">
                     </div>
                 </div>
             </div>

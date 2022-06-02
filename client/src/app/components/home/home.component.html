@@ -3,16 +3,16 @@
         <h1> {{title}}</h1>
         <p>Disfruta de los eventos posteados por tus amigos y comparte tus gustos</p>
         <p>
-            <a href="#" class="btn btn-success btn-lg" role="button">
+            <a [routerLink]="['/profile', identity._id]" class="btn btn-success btn-lg" role="button">
                 Mi perfil
             </a>
-            <a href="#" class="btn btn-primary btn-lg" role="button">
+            <a [routerLink]="['/timeline']" [routerLinkActive]="['active']" class="btn btn-primary btn-lg" role="button">
                 Eventos
             </a>
-            <a href="#" class="btn btn-default btn-lg" role="button">
+            <a [routerLink]="['/users']" [routerLinkActive]="['active']" class="btn btn-default btn-lg" role="button">
                 Usuarios
             </a>
-            <a href="#" class="btn btn-default btn-lg" role="button">
+            <a [routerLink]="['/wishlist', identity._id, 1]" class="btn btn-default btn-lg" role="button">
                 Mi WishList
             </a>
         </p>

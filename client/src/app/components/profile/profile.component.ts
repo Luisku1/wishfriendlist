@@ -76,7 +76,7 @@ export class ProfileComponent implements OnInit
                     this.user = response.user;
                     this.getCounters(this.user._id)
                 
-                    if(response.following && response.following._id)
+                    if(response.value.following && response.value.following._id)
                     {
                         this.following = true;
 
@@ -85,7 +85,7 @@ export class ProfileComponent implements OnInit
                         this.following = false;
                     }
 
-                    if(response.followed && response.followed._id)
+                    if(response.value.followed && response.value.followed._id)
                     {
                         this.followed = true;
                     
